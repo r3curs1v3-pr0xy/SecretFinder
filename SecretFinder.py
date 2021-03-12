@@ -37,7 +37,6 @@ from urllib.parse import urlparse
 _regex = {
     'google_api'     : r'AIza[0-9A-Za-z-_]{35}',
     'firebase'  : r'AAAA[A-Za-z0-9_-]{7}:[A-Za-z0-9_-]{140}',
-    'google_captcha' : r'6L[0-9A-Za-z-_]{38}|^6[0-9a-zA-Z_-]{39}$',
     'google_oauth'   : r'ya29\.[0-9A-Za-z\-_]+',
     'amazon_aws_access_key_id' : r'AKIA[0-9A-Z]{16}',
     'amazon_mws_auth_toke' : r'amzn\\.mws\\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
@@ -49,13 +48,8 @@ _regex = {
            r"|s3.amazonaws.com/[a-zA-Z0-9-\.\_]+" \
            r"|s3.console.aws.amazon.com/s3/buckets/[a-zA-Z0-9-\.\_]+)",
     'facebook_access_token' : r'EAACEdEose0cBA[0-9A-Za-z]+',
-    'authorization_basic' : r'basic [a-zA-Z0-9=:_\+\/-]{5,100}',
-    'authorization_bearer' : r'bearer [a-zA-Z0-9_\-\.=:_\+\/]{5,100}',
-    'authorization_api' : r'api[key|_key|\s+]+[a-zA-Z0-9_\-]{5,100}',
     'mailgun_api_key' : r'key-[0-9a-zA-Z]{32}',
     'twilio_api_key' : r'SK[0-9a-fA-F]{32}',
-    'twilio_account_sid' : r'AC[a-zA-Z0-9_\-]{32}',
-    'twilio_app_sid' : r'AP[a-zA-Z0-9_\-]{32}',
     'paypal_braintree_access_token' : r'access_token\$production\$[0-9a-z]{16}\$[0-9a-f]{32}',
     'square_oauth_secret' : r'sq0csp-[ 0-9A-Za-z\-_]{43}|sq0[a-z]{3}-[0-9A-Za-z\-_]{22,43}',
     'square_access_token' : r'sqOatp-[0-9A-Za-z\-_]{22}|EAAA[a-zA-Z0-9]{60}',
@@ -68,13 +62,7 @@ _regex = {
     'pgp_private_block' : r'-----BEGIN PGP PRIVATE KEY BLOCK-----',
     'json_web_token' : r'ey[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$',
     'slack_token' : r"\"api_token\":\"(xox[a-zA-Z]-[a-zA-Z0-9-]+)\"",
-    'SSH_privKey' : r"([-]+BEGIN [^\s]+ PRIVATE KEY[-]+[\s]*[^-]*[-]+END [^\s]+ PRIVATE KEY[-]+)",
-    'Heroku API KEY' : r'[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}',
-    'possible_Creds' : r"(?i)(" \
-                    r"password\s*[`=:\"]+\s*[^\s]+|" \
-                    r"password is\s*[`=:\"]*\s*[^\s]+|" \
-                    r"pwd\s*[`=:\"]*\s*[^\s]+|" \
-                    r"passwd\s*[`=:\"]+\s*[^\s]+)",
+    'SSH_privKey' : r"([-]+BEGIN [^\s]+ PRIVATE KEY[-]+[\s]*[^-]*[-]+END [^\s]+ PRIVATE KEY[-]+)"
 }
 
 _template = '''
@@ -454,10 +442,10 @@ if __name__ == "__main__":
                             no_dup.append(context)
                         # --
                 else:
-                    body += '</a><div class="container">%s</div></div>'%(match.get('context')[0] if len(match.get('context'))>1 else match.get('context'))
+                    body += '</a><div class="container">%s</div></div>'%(match.get('context')[0])
                     body = body.replace(
-                        match.get('context')[0] if len(match.get('context')) > 0 else ''.join(match.get('context')),
-                        '<span style="background-color:yellow">%s</span>'%(match.get('context') if len(match.get('context'))>1 else match.get('context'))
+                        match.get('context')[0],
+                        '<span style="background-color:yellow">%s</span>'%(match.get('context')[0])
                     )
                 output += header + body 
     if args.output != 'cli':
